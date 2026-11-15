@@ -41,6 +41,8 @@ export const CartSlice = createSlice({
 
 });
 
+// Redux slice actions are intentionally exported from this non-component file.
+// eslint-disable-next-line react-refresh/only-export-components
 export const { addItem, removeItem, updateQuantity } = CartSlice.actions;
 
 export default CartSlice.reducer;
