@@ -15,10 +15,6 @@ function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
 
-    // create Component level state var to track products added to cart
-    // initialize as empty object
-    const [addedToCart, setAddedToCart] = useState({});
-
     //get state var for current cart items and get total quantity of items in cart
     const cartItems = useSelector((state) => state.cart.items);
     const calculateTotalQuantity = () => { 
@@ -283,12 +279,7 @@ function ProductList({ onHomeClick }) {
     // add event handler to add a plant to a cart, when the user selects the Add to Cart button
     const handleAddToCart = (product) => {
         dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
-
-        setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
-            ...prevState, // Spread the previous state to retain existing entries
-            [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
-            }));
-        };
+    };
  
     // config web page HTML code for return()
     return (
@@ -328,7 +319,9 @@ function ProductList({ onHomeClick }) {
       <div>{category.category}</div> {/* Display the category name */}
     </h1>
     <div className="product-list"> {/* Container for the list of plant cards */}
-      {category.plants.map((plant, plantIndex) => ( // Loop through each plant in the current category
+      {category.plants.map((plant, plantIndex) => { // Loop through each plant in the current category
+        const addedToCart = cartItems.some((item) => item.name === plant.name);
+        return (
         <div className="product-card" key={plantIndex}> {/* Unique key for each plant card */}
           <img 
             className="product-image" 
@@ -340,13 +333,15 @@ function ProductList({ onHomeClick }) {
           <div className="product-description">{plant.description}</div> {/* Display plant description */}
           <div className="product-cost">${plant.cost}</div> {/* Display plant cost */}
           <button
-            className="product-button"
+            className={`product-button${addedToCart ? ' added-to-cart' : ''}`}
+            disabled={addedToCart}
             onClick={() => handleAddToCart(plant)} // Handle adding plant to cart
           >
-            Add to Cart
+            {addedToCart ? 'Added to Cart' : 'Add to Cart'}
           </button>
         </div>
-      ))}
+        );
+      })}
     </div>
   </div>
 ))}

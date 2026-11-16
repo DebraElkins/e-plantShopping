@@ -30,8 +30,9 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   //add an event handler placeholder to handle checkout shopping
+  //will be added as a capability in the future
   const handleCheckoutShopping = () => {
-    alert('Functionality to be added for future reference');
+    alert('Coming Soon');
   };
 
   // define event handers to increment or decrement an item in the cart
